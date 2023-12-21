@@ -22,6 +22,45 @@ h5,
 h6 {
   font-family: "Raleway", sans-serif;
 }
+
+/*--------------------------------------------------------------
+# Preloader
+--------------------------------------------------------------*/
+#preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  overflow: hidden;
+  background: #fff;
+}
+
+#preloader:before {
+  content: "";
+  position: fixed;
+  top: calc(50% - 30px);
+  left: calc(50% - 30px);
+  border: 6px solid #1877F2;
+  border-top-color: #d2f9eb;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: animate-preloader 1s linear infinite;
+}
+
+@keyframes animate-preloader {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
 .p-form {
   margin-top: 130px;
 }
@@ -342,13 +381,13 @@ h6 {
   font-size: 48px;
   font-weight: 700;
   line-height: 56px;
-  color: black;
+  color: rgba(33, 32, 32, 0.726);
 }
 
 #hero h2 {
-  color: #484848;
+  color: #484848c2;
   margin-bottom: 50px;
-  font-size: 24px;
+  font-size: 21px;
 }
 
 #hero .btn-get-started {
@@ -456,6 +495,11 @@ section {
   color: #222222;
 }
 
+@media (max-width: 768px) {
+  .section-title h2 {
+    font-size: 26px;
+  }
+}
 .section-title h2::before,
 .section-title h2::after {
   content: "";
@@ -602,8 +646,8 @@ section {
   font-size: 36px;
   line-height: 30px;
   display: block;
-  font-weight: 700;
-  color: #222222;
+  font-weight: 600;
+  color: rgba(49, 48, 48, 0.726);
   margin-left: 50px;
 }
 
