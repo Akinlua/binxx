@@ -41,11 +41,6 @@ require("dotenv").config();
       callback: function (response) {
         const currentDate = new Date();
 
-        // Add 30 days to the current date
-        const futureDate = new Date(
-          currentDate.getTime() + 30 * 24 * 60 * 60 * 1000
-        );
-
         // Format the future date as "10 Jan, 2024"
         const options = { day: "numeric", month: "short", year: "numeric" };
         const formattedDate = futureDate.toLocaleDateString("en-US", options);
@@ -56,7 +51,6 @@ require("dotenv").config();
           email: email,
           plan: plan,
           price: amount / 100,
-          "Expiry Date": formattedDate,
           "Phone number": phone,
         });
         // What to do after payment is successful
