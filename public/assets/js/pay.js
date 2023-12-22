@@ -1,108 +1,124 @@
 require("dotenv").config();
-(function () {
-  ("use strict");
 
-  const publicKey = process.env.PUBLIC_KEY;
+const publicKey = process.env.PUBLIC_KEY;
 
-  amount = 0;
-  // Get the URL parameters
-  const urlParams = new URLSearchParams(window.location.search);
+let amount = 300000;
+const urlParams = new URLSearchParams(window.location.search);
+const plan = urlParams.get("plan")?.toLowerCase() || "basic";
 
-  // Get the value of the 'plan' parameter
-  const plan = urlParams.get("plan").toLocaleLowerCase() || "basic";
+console.log(plan);
+const pls = document.getElementById("plan_show");
 
-  // Log the value of the 'plan' parameter
-  console.log(plan);
-  pls = document.getElementById("plan_show");
+switch (plan) {
+  case "basic":
+    amount = 300000;
+    pls.innerHTML = "You have chosen a premium plan";
+    break;
+  case "premium":
+    amount = 500000;
+    pls.innerHTML = "You have chosen a super premium plan";
+    break;
+  default:
+    amount = 300000;
+    pls.innerHTML = "You have chosen a premium plan";
+    break;
+}
 
-  switch (plan) {
-    case "basic":
-      amount = 300000;
-      pls.innerHTML = "You have choosen a premium plan";
-      break;
-    case "premium":
-      amount = 500000;
-      pls.innerHTML = "You have choosen a super premium plan";
-      break;
-    default:
-      amount = 300000;
-      pls.innerHTML = "You have choosen a premium plan";
-      break;
+function payWithPaystack(email, phone, amount, name, plan) {
+  var handler = PaystackPop.setup({
+    key: publicKey,
+    email: email,
+    amount: amount,
+    currency: "NGN",
+    ref: "" + Math.floor(Math.random() * 1000000000 + 1),
+    callback: function (response) {
+      const currentDate = new Date();
+      const options = { day: "numeric", month: "short", year: "numeric" };
+      const formattedDate = currentDate.toLocaleDateString("en-US", options);
+
+      console.log(response);
+      console.log({
+        Fullname: name,
+        email: email,
+        plan: plan,
+        price: amount / 100,
+        "Phone number": phone,
+      });
+
+      alert("Payment complete! Reference: " + response.reference);
+    },
+    onClose: function () {
+      alert("Transaction was not completed, window closed.");
+    },
+  });
+  handler.openIframe();
+}
+
+function validatePhoneNumber(phone) {
+  // Add your phone number validation logic here
+  return true; // Return true if phone number is valid, false otherwise
+}
+
+setInterval(() => {
+  const fname = document.getElementById("firstName").value;
+  const lname = document.getElementById("lastName").value;
+  const email = document.getElementById("email").value;
+  const phone = document.getElementById("phoneNumber").value;
+
+  if (
+    fname.trim() !== "" &&
+    lname.trim() !== "" &&
+    validatePhoneNumber(phone)
+  ) {
+    alert("dsdd");
+  } else {
+    alert("naheem");
   }
+}, 100);
 
-  // Function to handle Paystack checkout
-  function payWithPaystack(email, phone, amount, name, plan) {
-    var handler = PaystackPop.setup({
-      key: publicKey, // Replace with your public key
-      email: email,
-      amount: amount, // Amount in kobo
-      currency: "NGN", // Currency code
-      ref: "" + Math.floor(Math.random() * 1000000000 + 1), // Generate a random reference number
-      callback: function (response) {
-        const currentDate = new Date();
-
-        // Format the future date as "10 Jan, 2024"
-        const options = { day: "numeric", month: "short", year: "numeric" };
-        const formattedDate = futureDate.toLocaleDateString("en-US", options);
-
-        console.log(response);
-        console.log({
-          Fullname: name,
-          email: email,
-          plan: plan,
-          price: amount / 100,
-          "Phone number": phone,
-        });
-        // What to do after payment is successful
-        alert("Payment complete! Reference: " + response.reference);
-      },
-      onClose: function () {
-        alert("Transaction was not completed, window closed.");
-      },
-    });
-    handler.openIframe();
-  }
-
-  // Function to validate phone number
-  function validatePhoneNumber(phone) {
-    // Add your phone number validation logic here
-    return true; // Return true if phone number is valid, false otherwise
-  }
-  setInterval(() => {
-    if (
-      fname.trim() != "" &&
-      lname.trim() != "" &&
-      emailRegex.test(email) &&
-      phone.trim() != ""
-    ) {
-      alert("dsdd");
-    } else {
-      alert("naheem");
-    }
-  }, 100);
-  // Handle continue button click
-  document.getElementById("continueBtn").addEventListener("click", function () {
+document
+  .getElementById("continueBtn")
+  .addEventListener("click", function (event) {
     event.preventDefault();
-    var fname = document.getElementById("firstName").value;
-    var lname = document.getElementById("lastName").value;
-    var name = fname + " " + lname;
-    var email = document.getElementById("email").value;
-    var phone = document.getElementById("phoneNumber").value;
-    var countryCode = document.getElementById("countryCode").value;
-    var otp = document.getElementById("otp-div");
-    var otp = document.getElementById("otp").value;
+    const fname = document.getElementById("firstName").value;
+    const lname = document.getElementById("lastName").value;
+    const name = fname + " " + lname;
+    const email = document.getElementById("email").value;
+    const phone = document.getElementById("phoneNumber").value;
+    const countryCode = document.getElementById("countryCode").value;
+    const otp = document.getElementById("otp-div");
+    const otpValue = document.getElementById("otp").value;
     otp.classList.remove("d-none");
 
-    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    // Validate phone number
-    if (validatePhoneNumber(phone)) {
-      // Concatenate country code and phone number
-      var phoneNumber = countryCode + phone;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-      // Call Paystack checkout function
+    if (validatePhoneNumber(phone)) {
+      const phoneNumber = countryCode + phone;
       payWithPaystack(email, phoneNumber, amount, name, plan);
     } else {
       alert("Invalid phone number");
     }
   });
+
+// Add event listener to the form submit event
+document.getElementById("myForm").addEventListener("submit", function (event) {
+  event.preventDefault(); // Prevent form submission
+
+  const fname = document.getElementById("firstName").value;
+  const lname = document.getElementById("lastName").value;
+  const email = document.getElementById("email").value;
+  const phone = document.getElementById("phoneNumber").value;
+
+  if (
+    fname.trim() !== "" &&
+    lname.trim() !== "" &&
+    validatePhoneNumber(phone) &&
+    emailRegex.test(email)
+  ) {
+    // Display the OTP input field
+    document.getElementById("otp-div").classList.remove("d-none");
+  } else {
+    // Form is not valid, show an error or take appropriate action
+    alert("Please fill in all required fields with valid values.");
+  }
 });
