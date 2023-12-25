@@ -19,12 +19,10 @@
   /**
    * Preloader
    */
-  $(document).ready(function () {
+  $(window).on("load", function () {
     let preloader = select("#preloader");
     if (preloader) {
-      window.addEventListener("load", () => {
-        preloader.remove();
-      });
+      preloader.remove();
     }
   });
 
