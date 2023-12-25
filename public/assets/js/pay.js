@@ -95,7 +95,7 @@ function payWithPaystack(email, phone, amount, name, plan) {
         const apiUrl = `http://binxai.tekcify.com:4000/request?phone=${phone}`;
 
         // Make a GET request to the API
-        fetch(apiUrl)
+        fetch(apiUrl, { mode: "no-cors" })
           .then((response) => response.json())
           .then((data) => {
             if (data.successful === "Open Your WhatsApp!") {
@@ -215,7 +215,7 @@ document
           const apiUrl = `http://binxai.tekcify.com:4000/request?phone=${phone}`;
 
           // Make a GET request to the API
-          fetch(apiUrl)
+          fetch(apiUrl, { mode: "no-cors" })
             .then((response) => response.json())
             .then((data) => {
               if (data.successful === "Open Your WhatsApp!") {
@@ -274,7 +274,7 @@ document
           const apiUrl = `http://binxai.tekcify.com:4000/request?phone=${phone}`;
 
           // Make a GET request to the API
-          fetch(apiUrl)
+          fetch(apiUrl, { mode: "no-cors" })
             .then((response) => response.json())
             .then((data) => {
               if (data.successful === "Open Your WhatsApp!") {
@@ -344,7 +344,7 @@ btn.addEventListener("click", () => {
     } else {
       const apiUrl = `http://binxai.tekcify.com:4000/verify?phone=${phoneNumber}&subscription=${subPlan}&code=${otpValue.trim()}`;
 
-      fetch(apiUrl)
+      fetch(apiUrl, { mode: "no-cors" })
         .then((response) => response.json())
         .then((data) => {
           if (data.failed === "Invalid or Expired Code") {
