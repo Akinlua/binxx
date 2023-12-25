@@ -196,7 +196,7 @@ document
       }
       if (
         (hasPaid && subNumber != phoneNumber) ||
-        (hasPaid && !hasSubscribedTruly)
+        (hasPaid && hasSubscribedTruly != "true")
       ) {
         if (!sentOtp) {
           btn.disabled = true;
@@ -327,6 +327,10 @@ document
 
 btn.addEventListener("click", () => {
   const otpValue = document.getElementById("otp").value;
+  const fname = document.getElementById("firstName").value;
+  const lname = document.getElementById("lastName").value;
+  const phoness = document.getElementById("phoneNumber").value;
+  const email = document.getElementById("email").value;
   const phone = document.getElementById("phoneNumber").value.replace(/^0+/, "");
   const countryCode = document.getElementById("countryCode").value;
   const phoneNumber = countryCode.replace("+", "") + phone.trim();
@@ -351,10 +355,16 @@ btn.addEventListener("click", () => {
             });
           } else if (data.successful.startsWith("Congratulations")) {
             Swal.fire({
-              icon: "info",
+              icon: "success",
               title: "Congratulations 🎊",
               text: `You are now registered as ${subPlan} user.`,
             }).then((value) => {
+              otpValue = document.getElementById("otp").value = "";
+              fname = document.getElementById("firstName").value = "";
+              lname = document.getElementById("lastName").value = "";
+              phoness = document.getElementById("phoneNumber").value = "";
+              email = document.getElementById("email").value = "";
+
               document.cookie =
                 "hasSubscribedTruly=true; expires=" +
                 new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toUTCString() +
