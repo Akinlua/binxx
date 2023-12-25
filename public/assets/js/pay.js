@@ -256,11 +256,7 @@ document
               console.error(error);
             });
         }
-      } else if (
-        hasPaid &&
-        subNumber == phoneNumber &&
-        hasSubscribedTruly != "true"
-      ) {
+      } else if (subNumber == phoneNumber && hasSubscribedTruly != "true") {
         if (!sentOtp) {
           btn.disabled = true;
           btnText = "Please wait...";
@@ -319,11 +315,7 @@ document
               console.error(error);
             });
         }
-      } else if (
-        hasPaid &&
-        subNumber == phoneNumber &&
-        hasSubscribedTruly == "true"
-      ) {
+      } else if (hasPaid && subNumber == phoneNumber) {
         Swal.fire({
           icon: "info",
           title: "Duplicate Subscription",
